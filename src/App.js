@@ -1,19 +1,33 @@
 import { useState } from "react";
+import { nanoid } from 'nanoid';
 
 import initialNotes from "./notes.json";
 import { NotesTable } from "./components/notesTable/notesTable";
 import Modal from "./hoc/Modal";
+import NoteForm from "./components/form/form";
 
 function App() {
   const [notes, setNotes] = useState(initialNotes);
-  const [isOpen, setOpen] = useState(true);
+  const [isOpen, setOpen] = useState(false);
 
+  const addNote = (name, categ, content) => {
+    const note = {
+      id: nanoid(),
+      name,
+      categ,
+      content
+    };
+    
+    setNotes(prevNotes => [...prevNotes, note]);
+    setOpen(false);
+  };
   const deleteNote = (noteId) => {
     setNotes(notes.filter((note) => note.id !== noteId));
   };
   const handleCloseModal = () => {
     setOpen(false);
   };
+  
   return (
     <>
       <table className="notes-table js-notes-table">
@@ -33,7 +47,7 @@ function App() {
       <button
         type="button"
         onClick={() => {
-          // onCreateNote;
+          setOpen(true);
         }}
       >
         Create Note
@@ -55,37 +69,7 @@ function App() {
 
       {isOpen && (
         <Modal onClose={handleCloseModal}>
-          <form
-            action=""
-            className="note-form visually-hidden"
-            autoComplete="off"
-          >
-            <label>
-              Name
-              <input type="text" placeholder="Name" name="name" />
-            </label>
-            <label>
-              Category
-              <input list="categories" name="categ" />
-              <datalist id="categories">
-                <option value="Task">Task</option>
-                <option value="Random Thought">Random Thought</option>
-                <option value="Idea">Idea</option>
-                <option value="Quote">Quote</option>
-              </datalist>
-            </label>
-            <label>
-              Content
-              <input type="text" placeholder="Content" name="content" />
-            </label>
-
-            <button type="submit" data-action="add-note">
-              Add
-            </button>
-            <button type="submit" data-action="edit-note">
-              Save
-            </button>
-          </form>
+         <NoteForm onSubmit={addNote}/>
 
           {/* <table class="js-archive-table visually-hidden">
           <thead>
@@ -99,10 +83,7 @@ function App() {
         </table> */}
           {/* </div>)} */}
 
-          <button
-            type="button"
-           onClick={handleCloseModal}
-          >
+          <button type="button" onClick={handleCloseModal}>
             X
           </button>
         </Modal>
