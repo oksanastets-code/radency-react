@@ -5,19 +5,23 @@ import initialNotes from "./notes.json";
 import { NotesTable } from "./components/notesTable/notesTable";
 import Modal from "./hoc/Modal";
 import NoteForm from "./components/form/form";
+import { getDates } from "./helper/getDates";
+import { getCurrentDate } from "./helper/getCurrentDate";
 
 function App() {
   const [notes, setNotes] = useState(initialNotes);
   const [isOpen, setOpen] = useState(false);
 
-  const addNote = (name, categ, content) => {
+  const addNote = (name, category, content) => {
     const note = {
       id: nanoid(),
       name,
-      categ,
-      content
+      created: getCurrentDate(),
+      category,
+      content, 
+      dates: getDates(content)
     };
-    
+ 
     setNotes(prevNotes => [...prevNotes, note]);
     setOpen(false);
   };
@@ -30,7 +34,7 @@ function App() {
   
   return (
     <>
-      <table className="notes-table js-notes-table">
+      <table>
         <thead>
           <tr>
             <th>Name</th>
@@ -41,7 +45,7 @@ function App() {
             <th>Buttons</th>
           </tr>
         </thead>
-        <NotesTable notes={notes} onDeleteNote={deleteNote} />
+        <NotesTable dates={getDates } notes={notes} onDeleteNote={deleteNote} />
       </table>
 
       <button

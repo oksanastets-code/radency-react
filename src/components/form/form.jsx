@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default function NoteForm({ onSubmit }) {
     const [name, setName] = useState("");
-    const [categ, setCateg] = useState("");
+    const [category, setCategory] = useState("");
     const [content, setContent] = useState("");
 
 
@@ -12,8 +12,8 @@ export default function NoteForm({ onSubmit }) {
             case "name":
                 setName(value);
                 break;
-            case "categ":
-                setCateg(value);
+            case "category":
+                setCategory(value);
                 break;
             case "content":
                 setContent(value);
@@ -24,9 +24,9 @@ export default function NoteForm({ onSubmit }) {
     };
     const handleSubmit = e => {
         e.preventDefault();
-        onSubmit(name, categ, content);
+        onSubmit(name, category, content);
         setName('');
-        setCateg('');
+        setCategory('');
         setContent('');
     };
     return (
@@ -47,8 +47,8 @@ export default function NoteForm({ onSubmit }) {
                 Category
                 <input
                     list="categories"
-                    name="categ"
-                    value={categ}
+                    name="category"
+                    value={category}
                     required
                     onChange={handleInput}
                 />
