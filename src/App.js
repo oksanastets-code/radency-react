@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { nanoid } from 'nanoid';
+import { useState, useEffect } from "react";
+import { nanoid } from "nanoid";
 
 import initialNotes from "./notes.json";
+import { Table } from "./components/table/table";
 import { NotesTable } from "./components/notesTable/notesTable";
 import Modal from "./hoc/Modal";
 import NoteForm from "./components/form/form";
@@ -11,43 +12,47 @@ import { getCurrentDate } from "./helper/getCurrentDate";
 function App() {
   const [notes, setNotes] = useState(initialNotes);
   const [isOpen, setOpen] = useState(false);
-
+//   useEffect(() => {
+//   console.log('UseEffect');
+// }, [notes])
   const addNote = (name, category, content) => {
     const note = {
       id: nanoid(),
       name,
       created: getCurrentDate(),
       category,
-      content, 
-      dates: getDates(content)
+      content,
+      dates: getDates(content),
+      status: "active",
     };
- 
-    setNotes(prevNotes => [...prevNotes, note]);
+
+    setNotes((prevNotes) => [...prevNotes, note]);
     setOpen(false);
   };
   const deleteNote = (noteId) => {
     setNotes(notes.filter((note) => note.id !== noteId));
   };
+
+  const archiveNote = (noteId) => {
+    console.log(noteId);
+    const archivedNote = notes.find(note => note.id === noteId);
+    archivedNote.status = 'archived';
+    console.log(notes);
+  };
   const handleCloseModal = () => {
     setOpen(false);
   };
-  
+
   return (
     <>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Created</th>
-            <th>Category</th>
-            <th>Content</th>
-            <th>Dates</th>
-            <th>Buttons</th>
-          </tr>
-        </thead>
-        <NotesTable dates={getDates } notes={notes} onDeleteNote={deleteNote} />
-      </table>
-
+      <Table title="notes">
+        <NotesTable
+          dates={getDates}
+          notes={notes}
+          onDeleteNote={deleteNote}
+          onArchiveNote={archiveNote}
+        />
+      </Table>
       <button
         type="button"
         onClick={() => {
@@ -56,36 +61,12 @@ function App() {
       >
         Create Note
       </button>
-
-      <table className="summary-table js-summary-table">
-        <thead>
-          <tr>
-            <th>Note Category</th>
-            <th>Active</th>
-            <th>
-              <a href="" className="js-archive">
-                Archived
-              </a>
-            </th>
-          </tr>
-        </thead>
-      </table>
+      <Table title="summary"></Table>
 
       {isOpen && (
         <Modal onClose={handleCloseModal}>
-         <NoteForm onSubmit={addNote}/>
-
-          {/* <table class="js-archive-table visually-hidden">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Content</th>
-              <th></th>
-            </tr>
-          </thead>
-        </table> */}
-          {/* </div>)} */}
+          <NoteForm onSubmit={addNote} />
+          <Table title="archive"></Table>
 
           <button type="button" onClick={handleCloseModal}>
             X
