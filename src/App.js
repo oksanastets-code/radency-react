@@ -14,9 +14,9 @@ function App() {
   const [isOpen, setOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
-//   useEffect(() => {
-//   console.log('UseEffect');
-// }, [notes])
+  //   useEffect(() => {
+  //   console.log('UseEffect');
+  // }, [notes])
   const addNote = (name, category, content) => {
     const note = {
       id: nanoid(),
@@ -37,8 +37,9 @@ function App() {
 
   const archiveNote = (noteId) => {
     console.log(noteId);
-    const archivedNote = notes.find(note => note.id === noteId);
-    archivedNote.status = 'archived';
+    const archivedNote = notes.find((note) => note.id === noteId);
+    archivedNote.status = "archived";
+    setNotes(notes.map(note => note.id!==noteId ? note : archivedNote ))
     console.log(notes);
   };
   const handleCloseModal = () => {
@@ -49,7 +50,12 @@ function App() {
   const handleCreateBtn = () => {
     setOpen(true);
     setIsAdding(true);
-  }
+  };
+  const handleArchiveLink = (e) => {
+    e.preventDefault();
+    setOpen(true);
+    setShowArchive(true);
+  };
   return (
     <>
       <Table title="notes">
@@ -60,18 +66,15 @@ function App() {
           onArchiveNote={archiveNote}
         />
       </Table>
-      <button
-        type="button"
-        onClick={handleCreateBtn}
-      >
+      <button type="button" onClick={handleCreateBtn}>
         Create Note
       </button>
-      <Table title="summary"></Table>
+      <Table title="summary" onArchiveLinkClick={handleArchiveLink}></Table>
 
       {isOpen && (
         <Modal onClose={handleCloseModal}>
-          {isAdding && (<NoteForm onSubmit={addNote} />)}
-          {showArchive && (<Table title="archive"></Table>)}
+          {isAdding && <NoteForm onSubmit={addNote} />}
+          {showArchive && <Table title="archive"></Table>}
 
           <button type="button" onClick={handleCloseModal}>
             X
