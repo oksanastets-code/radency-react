@@ -12,6 +12,8 @@ import { getCurrentDate } from "./helper/getCurrentDate";
 function App() {
   const [notes, setNotes] = useState(initialNotes);
   const [isOpen, setOpen] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [showArchive, setShowArchive] = useState(false);
 //   useEffect(() => {
 //   console.log('UseEffect');
 // }, [notes])
@@ -41,8 +43,13 @@ function App() {
   };
   const handleCloseModal = () => {
     setOpen(false);
+    setIsAdding(false);
+    setShowArchive(false);
   };
-
+  const handleCreateBtn = () => {
+    setOpen(true);
+    setIsAdding(true);
+  }
   return (
     <>
       <Table title="notes">
@@ -55,9 +62,7 @@ function App() {
       </Table>
       <button
         type="button"
-        onClick={() => {
-          setOpen(true);
-        }}
+        onClick={handleCreateBtn}
       >
         Create Note
       </button>
@@ -65,8 +70,8 @@ function App() {
 
       {isOpen && (
         <Modal onClose={handleCloseModal}>
-          <NoteForm onSubmit={addNote} />
-          <Table title="archive"></Table>
+          {isAdding && (<NoteForm onSubmit={addNote} />)}
+          {showArchive && (<Table title="archive"></Table>)}
 
           <button type="button" onClick={handleCloseModal}>
             X
