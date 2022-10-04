@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { nanoid } from "nanoid";
 
 import initialNotes from "./notes.json";
 import { Table } from "./components/table/table";
 import { NotesTable } from "./components/notesTable/notesTable";
+import { ArchiveTable } from "./components/archiveTable/archiveTable";
 import Modal from "./hoc/Modal";
 import NoteForm from "./components/form/form";
 import { getDates } from "./helper/getDates";
@@ -36,10 +37,9 @@ function App() {
   };
 
   const archiveNote = (noteId) => {
-    console.log(noteId);
     const archivedNote = notes.find((note) => note.id === noteId);
     archivedNote.status = "archived";
-    setNotes(notes.map(note => note.id!==noteId ? note : archivedNote ))
+    setNotes(notes.map((note) => (note.id !== noteId ? note : archivedNote)));
     console.log(notes);
   };
   const handleCloseModal = () => {
@@ -51,11 +51,15 @@ function App() {
     setOpen(true);
     setIsAdding(true);
   };
-  const handleArchiveLink = (e) => {
-    e.preventDefault();
+  const handleArchiveBtn = () => {
     setOpen(true);
     setShowArchive(true);
   };
+  const handleUnarchiveBtn = (noteId) => {
+    const unarchivedNote = notes.find((note) => note.id === noteId);
+    unarchivedNote.status = "active";
+    setNotes(notes.map((note) => (note.id !== noteId ? note : unarchivedNote)));
+  }
   return (
     <>
       <Table title="notes">
@@ -69,12 +73,16 @@ function App() {
       <button type="button" onClick={handleCreateBtn}>
         Create Note
       </button>
-      <Table title="summary" onArchiveLinkClick={handleArchiveLink}></Table>
+      <Table title="summary" onArchiveLinkClick={handleArchiveBtn}></Table>
 
       {isOpen && (
         <Modal onClose={handleCloseModal}>
           {isAdding && <NoteForm onSubmit={addNote} />}
-          {showArchive && <Table title="archive"></Table>}
+          {showArchive && (
+            <Table title="archive">
+              <ArchiveTable notes={notes} onUnarchiveNote={ handleUnarchiveBtn} />
+            </Table>
+          )}
 
           <button type="button" onClick={handleCloseModal}>
             X
