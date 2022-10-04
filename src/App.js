@@ -14,12 +14,14 @@ function App() {
   const [notes, setNotes] = useState(initialNotes);
   const [isOpen, setOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingNote, setEditingNote] = useState({});
   const [showArchive, setShowArchive] = useState(false);
   //   useEffect(() => {
   //   console.log('UseEffect');
   // }, [notes])
   const addNote = (name, category, content) => {
-    const note = {
+    const newNote = {
       id: nanoid(),
       name,
       created: getCurrentDate(),
@@ -29,8 +31,24 @@ function App() {
       status: "active",
     };
 
-    setNotes((prevNotes) => [...prevNotes, note]);
+    setNotes((prevNotes) => [...prevNotes, newNote]);
     setOpen(false);
+  };
+  const editNote = (noteId) => {
+    setOpen(true);
+    setIsEditing(true);
+    const editingNote = notes.find((note) => note.id === noteId);
+    console.log(editingNote);
+   
+    // const editedNote = {
+    //   id: noteId,
+    //   name,
+    //   created,
+    //   category,
+    //   content,
+    //   dates: getDates(content),
+    //   status: "active",
+    // }
   };
   const deleteNote = (noteId) => {
     setNotes(notes.filter((note) => note.id !== noteId));
@@ -39,6 +57,7 @@ function App() {
   const archiveNote = (noteId) => {
     const archivedNote = notes.find((note) => note.id === noteId);
     archivedNote.status = "archived";
+    console.log(archivedNote);
     setNotes(notes.map((note) => (note.id !== noteId ? note : archivedNote)));
     console.log(notes);
   };
@@ -46,6 +65,7 @@ function App() {
     setOpen(false);
     setIsAdding(false);
     setShowArchive(false);
+    setIsEditing(false);
   };
   const handleCreateBtn = () => {
     setOpen(true);
@@ -59,13 +79,14 @@ function App() {
     const unarchivedNote = notes.find((note) => note.id === noteId);
     unarchivedNote.status = "active";
     setNotes(notes.map((note) => (note.id !== noteId ? note : unarchivedNote)));
-  }
+  };
   return (
     <>
       <Table title="notes">
         <NotesTable
           dates={getDates}
           notes={notes}
+          onEditNote={editNote}
           onDeleteNote={deleteNote}
           onArchiveNote={archiveNote}
         />
@@ -73,14 +94,19 @@ function App() {
       <button type="button" onClick={handleCreateBtn}>
         Create Note
       </button>
-      <Table title="summary" onArchiveLinkClick={handleArchiveBtn}></Table>
+      <Table title="summary" onArchiveBtnClick={handleArchiveBtn}></Table>
 
       {isOpen && (
         <Modal onClose={handleCloseModal}>
-          {isAdding && <NoteForm onSubmit={addNote} />}
+          {isAdding && <NoteForm mode="isAdding" onSubmit={addNote} />}
+          {isEditing && <NoteForm mode="isEditing"onSubmit={editNote} />}
+
           {showArchive && (
             <Table title="archive">
-              <ArchiveTable notes={notes} onUnarchiveNote={ handleUnarchiveBtn} />
+              <ArchiveTable
+                notes={notes}
+                onUnarchiveNote={handleUnarchiveBtn}
+              />
             </Table>
           )}
 

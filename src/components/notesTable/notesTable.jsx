@@ -1,6 +1,11 @@
 import { getDates } from "../../helper/getDates";
 
-export const NotesTable = ({ notes, onDeleteNote, onArchiveNote }) => (
+export const NotesTable = ({
+  notes,
+  onDeleteNote,
+  onArchiveNote,
+  onEditNote,
+}) => (
   <tbody>
     {notes.map(
       (note) =>
@@ -12,7 +17,9 @@ export const NotesTable = ({ notes, onDeleteNote, onArchiveNote }) => (
             <td>{note.content}</td>
             <td>{getDates(note.content)}</td>
             <td>
-              <button type="button">Edit</button>
+              <button type="button" onClick={() => onEditNote(note.id)}>
+                Edit
+              </button>
               <button type="button" onClick={() => onArchiveNote(note.id)}>
                 Archive
               </button>
