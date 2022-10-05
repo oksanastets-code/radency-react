@@ -34,11 +34,12 @@ function App() {
     setNotes((prevNotes) => [...prevNotes, newNote]);
     setOpen(false);
   };
-  const editNote = (noteId) => {
-    setOpen(true);
-    setIsEditing(true);
-    const editingNote = notes.find((note) => note.id === noteId);
-    console.log(editingNote);
+  const editNote = () => {
+    // setOpen(true);
+    // setIsEditing(true);
+    // const editingNote = notes.find((note) => note.id === noteId);
+    // console.log(editingNote);
+    console.log('how to prepopulate table');
    
     // const editedNote = {
     //   id: noteId,
@@ -80,13 +81,20 @@ function App() {
     unarchivedNote.status = "active";
     setNotes(notes.map((note) => (note.id !== noteId ? note : unarchivedNote)));
   };
+  const handleEditBtn = (noteId) => {
+    setOpen(true);
+    setIsEditing(true);
+    const editingNote = notes.find((note) => note.id === noteId);
+    console.log('note to edit', editingNote);
+    setEditingNote(editingNote);
+  }
   return (
     <>
       <Table title="notes">
         <NotesTable
           dates={getDates}
           notes={notes}
-          onEditNote={editNote}
+          onEditNote={handleEditBtn}
           onDeleteNote={deleteNote}
           onArchiveNote={archiveNote}
         />
@@ -99,7 +107,7 @@ function App() {
       {isOpen && (
         <Modal onClose={handleCloseModal}>
           {isAdding && <NoteForm mode="isAdding" onSubmit={addNote} />}
-          {isEditing && <NoteForm mode="isEditing"onSubmit={editNote} />}
+          {isEditing && <NoteForm mode="isEditing" onSubmit={editNote} data={editingNote} />}
 
           {showArchive && (
             <Table title="archive">

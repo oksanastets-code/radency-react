@@ -1,4 +1,4 @@
-export const Table = ({ children, title, onArchiveLinkClick }) => {
+export const Table = ({ children, title, onArchiveBtnClick }) => {
   return (
     <table>
       {title === "notes" && (
@@ -19,7 +19,7 @@ export const Table = ({ children, title, onArchiveLinkClick }) => {
             <th>Note Category</th>
             <th>Active</th>
             <th>
-              <button type="button" onClick={onArchiveLinkClick}>Archived</button>
+              <button type="button" onClick={onArchiveBtnClick}>Archived</button>
             </th>
           </tr>
         </thead>

@@ -1,9 +1,11 @@
 import { useState } from "react";
 
-export default function NoteForm({ mode, onSubmit }) {
+export default function NoteForm({ mode, onSubmit, data }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
+  
+
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -21,6 +23,12 @@ export default function NoteForm({ mode, onSubmit }) {
         return;
     }
   };
+    const handleEditInput = ({ target: { name, value } }) => {
+        setName(prev => ({ ...prev, [name]: value }));
+        setCategory(prev => ({ ...prev, [name]: value }));
+        setContent(prev => ({ ...prev, [name]: value }));
+  };
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(name, category, content);
@@ -28,9 +36,10 @@ export default function NoteForm({ mode, onSubmit }) {
     setCategory("");
     setContent("");
   };
+
   return (
     <div>
-      {mode === "isAdding" ? (
+      {mode === "isAdding" && (
         <form onSubmit={handleSubmit} autoComplete="off">
           <label>
             Name
@@ -70,19 +79,18 @@ export default function NoteForm({ mode, onSubmit }) {
               onChange={handleInput}
             />
           </label>
-
           <button type="submit">Add</button>
         </form>
-          ) : null}
-          {mode === "isEditing" ? (
-        <form onSubmit={handleSubmit} autoComplete="off">
+      )}
+      {mode === "isEditing" && (
+        <form onSubmit={handleSubmit}> autoComplete="off"
           <label>
             Name
             <input
               type="text"
               name="name"
-              value={name}
-              onChange={handleInput}
+              value={data.name}
+              onChange={handleEditInput}
               required
               placeholder="Name"
             />
@@ -92,9 +100,9 @@ export default function NoteForm({ mode, onSubmit }) {
             <input
               list="categories"
               name="category"
-              value={category}
+              value={data.category}
               required
-              onChange={handleInput}
+               onChange={handleEditInput}
             />
             <datalist id="categories">
               <option value="Task">Task</option>
@@ -109,15 +117,14 @@ export default function NoteForm({ mode, onSubmit }) {
               type="text"
               placeholder="Content"
               name="content"
-              value={content}
+              value={data.content}
               required
-              onChange={handleInput}
+               onChange={handleEditInput}
             />
           </label>
-
           <button type="submit">Save</button>
         </form>
-          ) : null}
+      )}
     </div>
   );
 }
