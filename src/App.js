@@ -9,6 +9,7 @@ import Modal from "./hoc/Modal";
 import NoteForm from "./components/form/form";
 import { getDates } from "./helper/getDates";
 import { getCurrentDate } from "./helper/getCurrentDate";
+import { getValue } from "@testing-library/user-event/dist/utils";
 
 function App() {
   const [notes, setNotes] = useState(initialNotes);
@@ -33,26 +34,22 @@ function App() {
 
     setNotes((prevNotes) => [...prevNotes, newNote]);
     setOpen(false);
+    setIsAdding(false);
   };
-  const editNote = () => {
-    // setOpen(true);
-    // setIsEditing(true);
-    // const editingNote = notes.find((note) => note.id === noteId);
-    // console.log(editingNote);
-    console.log('how to prepopulate table');
+  const editNote = (obj) => {
+   console.log(obj.content);
    
-    // const editedNote = {
-    //   id: noteId,
-    //   name,
-    //   created,
-    //   category,
-    //   content,
-    //   dates: getDates(content),
-    //   status: "active",
-    // }
+
+    console.log("це має бути змінено", editingNote);
+    setOpen(false);
   };
   const deleteNote = (noteId) => {
-    setNotes(notes.filter((note) => note.id !== noteId));
+    setNotes(
+      notes.filter((note) => {
+        console.log("deleted:", noteId);
+        return note.i.d !== noteId;
+      })
+    );
   };
 
   const archiveNote = (noteId) => {
@@ -85,9 +82,9 @@ function App() {
     setOpen(true);
     setIsEditing(true);
     const editingNote = notes.find((note) => note.id === noteId);
-    console.log('note to edit', editingNote);
+    console.log("note to edit", editingNote);
     setEditingNote(editingNote);
-  }
+  };
   return (
     <>
       <Table title="notes">
@@ -107,7 +104,9 @@ function App() {
       {isOpen && (
         <Modal onClose={handleCloseModal}>
           {isAdding && <NoteForm mode="isAdding" onSubmit={addNote} />}
-          {isEditing && <NoteForm mode="isEditing" onSubmit={editNote} data={editingNote} />}
+          {isEditing && (
+            <NoteForm mode="isEditing" onSubmit={editNote} data={editingNote} />
+          )}
 
           {showArchive && (
             <Table title="archive">
