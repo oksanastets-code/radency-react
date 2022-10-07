@@ -37,10 +37,8 @@ function App() {
     setIsAdding(false);
   };
   const editNote = (obj) => {
-   console.log(obj.content);
-   
-
-    console.log("це має бути змінено", editingNote);
+    // const editedNote = { ...editingNote, ...obj }    
+    setNotes(notes.map((note) => (note.id !== editingNote.id ? note : { ...editingNote, ...obj })));
     setOpen(false);
   };
   const deleteNote = (noteId) => {
