@@ -6,7 +6,8 @@ import { Table } from "./components/table/table";
 import { NotesTable } from "./components/notesTable/notesTable";
 import { ArchiveTable } from "./components/archiveTable/archiveTable";
 import Modal from "./hoc/Modal";
-import NoteForm from "./components/form/form";
+import CreateNoteForm from "./components/form/createNoteForm";
+import EditNoteForm from "./components/form/editNoteForm";
 import { getDates } from "./helper/getDates";
 import { getCurrentDate } from "./helper/getCurrentDate";
 
@@ -94,9 +95,9 @@ function App() {
 
       {isOpen && (
         <Modal onClose={handleCloseModal}>
-          {isAdding && <NoteForm mode="isAdding" onSubmit={addNote} />}
+          {isAdding && <CreateNoteForm onSubmit={addNote} />}
           {isEditing && (
-            <NoteForm mode="isEditing" onSubmit={editNote} data={editingNote} />
+            <EditNoteForm onSubmit={editNote} data={editingNote} />
           )}
 
           {showArchive && (
