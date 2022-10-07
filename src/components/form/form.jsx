@@ -40,9 +40,7 @@ export default function NoteForm({ mode, onSubmit, data }) {
   };
     const handleEditSubmit = (e) => {
         e.preventDefault();
-        console.log('ми обновили деякі дані замітки', updNote);
-        onSubmit(updNote);
-        
+        onSubmit(updNote);   
 }
   return (
     <div>
