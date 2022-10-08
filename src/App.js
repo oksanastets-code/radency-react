@@ -8,6 +8,7 @@ import { ArchiveTable } from "./components/archiveTable/archiveTable";
 import Modal from "./hoc/Modal";
 import CreateNoteForm from "./components/form/createNoteForm";
 import EditNoteForm from "./components/form/editNoteForm";
+
 import { getDates } from "./helper/getDates";
 import { getCurrentDate } from "./helper/getCurrentDate";
 
