@@ -4,6 +4,7 @@ import { nanoid } from "nanoid";
 import initialNotes from "./notes.json";
 import { Table } from "./components/table/table";
 import { NotesTable } from "./components/notesTable/notesTable";
+import {SummaryTable} from "./components/summaryTable/summaryTable"
 import { ArchiveTable } from "./components/archiveTable/archiveTable";
 import Modal from "./hoc/Modal";
 import CreateNoteForm from "./components/form/createNoteForm";
@@ -14,7 +15,7 @@ import { getCurrentDate } from "./helper/getCurrentDate";
 
 function App() {
   const [notes, setNotes] = useState(initialNotes);
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingNote, setEditingNote] = useState({});
@@ -32,7 +33,7 @@ function App() {
     };
 
     setNotes((prevNotes) => [...prevNotes, newNote]);
-    setOpen(false);
+    setIsOpen(false);
     setIsAdding(false);
   };
   const editNote = (obj) => {
@@ -41,7 +42,7 @@ function App() {
         note.id !== editingNote.id ? note : { ...editingNote, ...obj }
       )
     );
-    setOpen(false);
+    setIsOpen(false);
     setIsEditing(false);
   };
   const deleteNote = (noteId) => {
@@ -54,17 +55,17 @@ function App() {
     setNotes(notes.map((note) => (note.id !== noteId ? note : archivedNote)));
   };
   const handleCloseModal = () => {
-    setOpen(false);
+    setIsOpen(false);
     setIsAdding(false);
     setShowArchive(false);
     setIsEditing(false);
   };
   const handleCreateBtn = () => {
-    setOpen(true);
+    setIsOpen(true);
     setIsAdding(true);
   };
   const handleArchiveBtn = () => {
-    setOpen(true);
+    setIsOpen(true);
     setShowArchive(true);
   };
   const handleUnarchiveBtn = (noteId) => {
@@ -73,7 +74,7 @@ function App() {
     setNotes(notes.map((note) => (note.id !== noteId ? note : unarchivedNote)));
   };
   const handleEditBtn = (noteId) => {
-    setOpen(true);
+    setIsOpen(true);
     setIsEditing(true);
     const editingNote = notes.find((note) => note.id === noteId);
     setEditingNote(editingNote);
@@ -92,7 +93,9 @@ function App() {
       <button type="button" onClick={handleCreateBtn}>
         Create Note
       </button>
-      <Table title="summary" onArchiveBtnClick={handleArchiveBtn}></Table>
+      <Table title="summary" onArchiveBtnClick={handleArchiveBtn}>
+        <SummaryTable arr={notes} />
+      </Table>
 
       {isOpen && (
         <Modal onClose={handleCloseModal}>

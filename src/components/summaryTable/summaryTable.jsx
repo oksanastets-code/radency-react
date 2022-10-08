@@ -1,31 +1,36 @@
-import { useState } from "react"
-
-
-export const SummaryTable = () => {
-    const [summaryData, setSummaryDate] = useState;
+import { useState } from "react";
+import InitialSum from "../../sum.json"
+export const SummaryTable = (arr) => {
+    const [summaryData, setSummaryData] = useState(InitialSum);
+    // const [notes, setNotes] = useState([]);
+    // const [options, setOptions] = useState([]);
+    // const [summaryItem, setSummaryItem] = useState({
+    //     id,
+    //     option,
+    //     active,
+    //     archived
+    // });
+    const notes = Object.values(arr)[0];
+    
+    // console.log(notes);
+    
+    const getUniqueOptions = (notes) => {
+        const options = notes.map(note=>note.category)
+        // console.log(options);
+        const uniqueOptions = options.filter((option, index, options) => options.indexOf(option) === index);
+        console.log(uniqueOptions);
+        return uniqueOptions;
+    }
+    getUniqueOptions(notes);
     return (
-{/* <tbody>
-      {notes.map(
-        (note) =>
-          note.status === "archived" && (
-            <tr key={note.id}>
-              <td>{note.name}</td>
-              <td>{note.category}</td>
-              <td>{note.content}</td>
-              <td>
-                <button type="button" onClick={() => onUnarchiveNote(note.id)}>
-                  Unarchive
-                </button>
-              </td>
-            </tr>
-          )
-      )}
-    </tbody> */}
-`
-        <tr>
-          <td>${option}</td>
-          <td>${active}</td>
-          <td>${archieved}</td>
-        </tr>`
-    );  
-}
+    <tbody>
+      {summaryData.map((data) => (
+        <tr key={data.option}>
+          <td>{data.option}</td>
+          <td>{data.active}</td>
+          <td>{data.archived}</td>
+        </tr>
+      ))}
+    </tbody>
+  );
+};
