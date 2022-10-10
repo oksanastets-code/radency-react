@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import InitialSum from "../../sum.json";
 
 import { getUniqueOptions } from "../../helper/getUniqueOptions";
 
 export const SummaryTable = (arr) => {
-  const [summaryData, setSummaryData] = useState(InitialSum);
+  const [summaryData, setSummaryData] = useState([]);
 
   //   const [summaryItem, setSummaryItem] = useState({
   //       option: "",
@@ -18,19 +17,15 @@ export const SummaryTable = (arr) => {
     const categories = getUniqueOptions(notes);
 
     categories.forEach((category) => {
-      console.log(category);
       const arrayByCategory = notes.filter(
         (note) => note.category === category
       );
-      console.log(arrayByCategory);
       const activeNotes = arrayByCategory.filter(
         (note) => note.status === "active"
       );
-      console.log(activeNotes.length);
       const archivedNotes = arrayByCategory.filter(
         (note) => note.status === "archived"
       );
-      console.log(archivedNotes.length);
 
       const newSummaryRowData = {};
       newSummaryRowData.option = category;
