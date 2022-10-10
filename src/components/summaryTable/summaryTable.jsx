@@ -21,7 +21,7 @@ export const SummaryTable = (arr) => {
         const notes = Object.values(arr)[0];
         const categories = getUniqueOptions(notes);
         
-        categories.forEach(category => {
+     categories.forEach(category => {
                 console.log(category);
                 const arrayByCategory = notes.filter(note => note.category === category);
                 console.log(arrayByCategory);
@@ -37,7 +37,6 @@ export const SummaryTable = (arr) => {
                 });
                 // console.log(summaryItem);
             })
-
     }, [arr])
 //     useEffect(() => {
 //     setSummaryData(prev=> [...prev, ...summaryItem])
