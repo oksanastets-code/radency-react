@@ -4,13 +4,7 @@ import { getUniqueOptions } from "../../helper/getUniqueOptions";
 
 export const SummaryTable = (arr) => {
   const [summaryData, setSummaryData] = useState([]);
-
-  //   const [summaryItem, setSummaryItem] = useState({
-  //       option: "",
-  //       active: null,
-  //       archived: null,
-  //   });
-
+//   const [newSummaryRowData, setNewSummaryRowData] = useState({});
   useEffect(() => {
     setSummaryData([]);
     const notes = Object.values(arr)[0];
@@ -26,7 +20,7 @@ export const SummaryTable = (arr) => {
       const archivedNotes = arrayByCategory.filter(
         (note) => note.status === "archived"
       );
-
+      
       const newSummaryRowData = {};
       newSummaryRowData.option = category;
       newSummaryRowData.active = activeNotes.length;
