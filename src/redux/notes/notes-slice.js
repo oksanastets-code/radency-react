@@ -5,18 +5,13 @@ export const notesSlice = createSlice({
   name: 'notes',
   initialState,
   reducers: {
-    // increment: (state) => {
-    //   state.value += 1
-    // },
-    // decrement: (state) => {
-    //   state.value -= 1
-    // },
-    // incrementByAmount: (state, action) => {
-    //   state.value += action.payload
-    // },
+    addNote: (state, action) => {
+      state.push(action.payload);
+      return state;
+    }
   },
 })
 
-export const { increment, decrement, incrementByAmount } = notesSlice.actions
+export const { addNote } = notesSlice.actions;
 
 export default notesSlice.reducer
