@@ -2,17 +2,16 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 
 import { connect } from "react-redux";
-// import { addTodos } from "../redux/reducer";
-
+import { addNote } from "./redux/notes/notes-slice";
 
 // import initialNotes from "./notes.json";
 import { Table } from "./components/table/table";
 import { NotesTable } from "./components/notesTable/notesTable";
-import {SummaryTable} from "./components/summaryTable/summaryTable"
-import { ArchiveTable } from "./components/archiveTable/archiveTable";
+// import { SummaryTable } from "./components/summaryTable/summaryTable";
+// import { ArchiveTable } from "./components/archiveTable/archiveTable";
 import Modal from "./hoc/Modal";
 import CreateNoteForm from "./components/form/createNoteForm";
-import EditNoteForm from "./components/form/editNoteForm";
+// import EditNoteForm from "./components/form/editNoteForm";
 
 import { getDates } from "./helper/getDates";
 import { getCurrentDate } from "./helper/getCurrentDate";
@@ -22,31 +21,37 @@ const mapStateToProps = (state) => {
     notes: state,
   };
 };
-
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addNote: (obj) => dispatch(addNote(obj)),
+  };
+};
 function App(props) {
   console.log(props);
   // const [notes, setNotes] = useState(initialNotes);
   const [isOpen, setIsOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingNote, setEditingNote] = useState({});
-  const [showArchive, setShowArchive] = useState(false);
+  // const [isEditing, setIsEditing] = useState(false);
+  // const [editingNote, setEditingNote] = useState({});
+  // const [showArchive, setShowArchive] = useState(false);
 
-  // const addNote = (name, category, content) => {
-  //   const newNote = {
-  //     id: nanoid(),
-  //     name,
-  //     created: getCurrentDate(),
-  //     category,
-  //     content,
-  //     dates: getDates(content),
-  //     status: "active",
-  //   };
+  const add = (name, category, content) => {
+    props.addNote({
+      id: nanoid(),
+      name,
+      created: getCurrentDate(),
+      category,
+      content,
+      dates: getDates(content),
+      status: "active",
+    })
+      
+    
 
-  //   setNotes((prevNotes) => [...prevNotes, newNote]);
-  //   setIsOpen(false);
-  //   setIsAdding(false);
-  // };
+    // setNotes((prevNotes) => [...prevNotes, newNote]);
+    setIsOpen(false);
+    setIsAdding(false);
+  };
   // const editNote = (obj) => {
   //   setNotes(
   //     notes.map((note) =>
@@ -65,12 +70,12 @@ function App(props) {
   //   archivedNote.status = "archived";
   //   setNotes(notes.map((note) => (note.id !== noteId ? note : archivedNote)));
   // };
-  // const handleCloseModal = () => {
-  //   setIsOpen(false);
-  //   setIsAdding(false);
-  //   setShowArchive(false);
-  //   setIsEditing(false);
-  // };
+  const handleCloseModal = () => {
+    setIsOpen(false);
+    setIsAdding(false);
+    // setShowArchive(false);
+    // setIsEditing(false);
+  };
   const handleCreateBtn = () => {
     setIsOpen(true);
     setIsAdding(true);
@@ -108,30 +113,28 @@ function App(props) {
         <SummaryTable arr={notes} />
       </Table> */}
 
-      {/* {isOpen && (
+      {isOpen && (
         <Modal onClose={handleCloseModal}>
-          {isAdding && <CreateNoteForm onSubmit={addNote} />}
-          {isEditing && (
-            <EditNoteForm onSubmit={editNote} data={editingNote} />
-          )}
+          {isAdding && <CreateNoteForm onSubmit={add} />}
+          {/* {isEditing && <EditNoteForm onSubmit={editNote} data={editingNote} />} */}
 
-          {showArchive && (
+          {/* {showArchive && (
             <Table title="archive">
               <ArchiveTable
                 notes={notes}
                 onUnarchiveNote={handleUnarchiveBtn}
               />
             </Table>
-          )}
+          )} */}
 
           <button type="button" onClick={handleCloseModal}>
             X
           </button>
         </Modal>
-      )} */}
+      )}
     </>
   );
 }
-export default connect(mapStateToProps, null)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 // export default App;
