@@ -95,7 +95,7 @@ function App(props) {
       <Table title="notes">
         <NotesTable
           dates={getDates}
-          notes={props.notes}
+          notes={props.notes.notes}
           // onEditNote={handleEditBtn}
           // onDeleteNote={deleteNote}
           // onArchiveNote={archiveNote}
