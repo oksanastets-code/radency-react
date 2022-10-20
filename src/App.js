@@ -2,9 +2,8 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 
 import { connect } from "react-redux";
-import { addNote } from "./redux/notes/notes-slice";
+import { addNote, deleteNote } from "./redux/notes/notes-slice";
 
-// import initialNotes from "./notes.json";
 import { Table } from "./components/table/table";
 import { NotesTable } from "./components/notesTable/notesTable";
 // import { SummaryTable } from "./components/summaryTable/summaryTable";
@@ -24,11 +23,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addNote: (obj) => dispatch(addNote(obj)),
+    deleteNote: (id) => dispatch(deleteNote(id))
   };
 };
 function App(props) {
   console.log(props);
-  // const [notes, setNotes] = useState(initialNotes);
   const [isOpen, setIsOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   // const [isEditing, setIsEditing] = useState(false);
@@ -45,10 +44,7 @@ function App(props) {
       dates: getDates(content),
       status: "active",
     })
-      
     
-
-    // setNotes((prevNotes) => [...prevNotes, newNote]);
     setIsOpen(false);
     setIsAdding(false);
   };
@@ -61,10 +57,7 @@ function App(props) {
   //   setIsOpen(false);
   //   setIsEditing(false);
   // };
-  // const deleteNote = (noteId) => {
-  //   setNotes(notes.filter((note) => note.id !== noteId));
-  // };
-
+ 
   // const archiveNote = (noteId) => {
   //   const archivedNote = notes.find((note) => note.id === noteId);
   //   archivedNote.status = "archived";
@@ -102,7 +95,7 @@ function App(props) {
           dates={getDates}
           notes={props.notes.notes}
           // onEditNote={handleEditBtn}
-          // onDeleteNote={deleteNote}
+          onDeleteNote={props.deleteNote}
           // onArchiveNote={archiveNote}
         />
       </Table>
