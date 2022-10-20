@@ -4,7 +4,7 @@ import { getUniqueOptions } from "../../helper/getUniqueOptions";
 
 export const SummaryTable = (arr) => {
   const [summaryData, setSummaryData] = useState([]);
-//   const [newSummaryRowData, setNewSummaryRowData] = useState({});
+
   useEffect(() => {
     setSummaryData([]);
     const notes = Object.values(arr)[0];
