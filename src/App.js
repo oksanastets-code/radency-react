@@ -2,8 +2,8 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 
 import { useSelector, useDispatch } from "react-redux";
-import { getNotes } from "./redux/notes/notes-selectors";
-import { addNote, deleteNote, archiveNote, unarchiveNote } from "./redux/notes/notes-slice";
+import { getNoteById, getNotes } from "./redux/notes/notes-selectors";
+import { addNote, deleteNote, archiveNote, unarchiveNote, editNote } from "./redux/notes/notes-slice";
 
 import { Table } from "./components/table/table";
 import { NotesTable } from "./components/notesTable/notesTable";
@@ -34,7 +34,7 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  // const [editingNote, setEditingNote] = useState({});
+  const [editingNote, setEditingNote] = useState({});
   const [showArchive, setShowArchive] = useState(false);
 
   const add = (name, category, content) => {
@@ -55,15 +55,15 @@ function App() {
   };
   const handleDelBtn = (id) => dispatch(deleteNote(id));
 
-  // const editNote = (obj) => {
-  //   setNotes(
-  //     notes.map((note) =>
-  //       note.id !== editingNote.id ? note : { ...editingNote, ...obj }
-  //     )
-  //   );
-  //   setIsOpen(false);
-  //   setIsEditing(false);
-  // };
+  const edit = (obj) => {
+    // setNotes(
+    //   notes.map((note) =>
+    //     note.id !== editingNote.id ? note : { ...editingNote, ...obj }
+    //   )
+    // );
+    setIsOpen(false);
+    setIsEditing(false);
+  };
   const arch = (id) => dispatch(archiveNote(id));
 
   const handleUnarchiveBtn = (id) => dispatch(unarchiveNote(id));
@@ -83,19 +83,19 @@ function App() {
     setShowArchive(true);
   };
   
-  // const handleEditBtn = (noteId) => {
-  //   setIsOpen(true);
-  //   setIsEditing(true);
-  //   const editingNote = notes.find((note) => note.id === noteId);
-  //   setEditingNote(editingNote);
-  // };
+  const handleEditBtn = (noteId) => {
+    setIsOpen(true);
+    setIsEditing(true);
+    const editingNote = notes.find((note) => note.id === noteId);
+    setEditingNote(editingNote);
+  };
   return (
     <>
       <Table title="notes">
         <NotesTable
           dates={getDates}
           notes={notes}
-          // onEditNote={handleEditBtn}
+          onEditNote={handleEditBtn}
           onDeleteNote={handleDelBtn}
           onArchiveNote={arch}
         />
@@ -110,7 +110,7 @@ function App() {
       {isOpen && (
         <Modal onClose={handleCloseModal}>
           {isAdding && <CreateNoteForm onSubmit={add} />}
-          {/* {isEditing && <EditNoteForm onSubmit={editNote} data={editingNote} />} */}
+          {isEditing && <EditNoteForm onSubmit={edit} data={editingNote} />}
 
           {showArchive && (
             <Table title="archive">
