@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { nanoid } from "nanoid";
 
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getNotes } from "./redux/notes/notes-selectors";
 import { addNote, deleteNote } from "./redux/notes/notes-slice";
 
 import { Table } from "./components/table/table";
@@ -15,19 +16,21 @@ import CreateNoteForm from "./components/form/createNoteForm";
 import { getDates } from "./helper/getDates";
 import { getCurrentDate } from "./helper/getCurrentDate";
 
-const mapStateToProps = (state) => {
-  return {
-    notes: state,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addNote: (obj) => dispatch(addNote(obj)),
-    deleteNote: (id) => dispatch(deleteNote(id))
-  };
-};
-function App(props) {
-  console.log(props);
+// const mapStateToProps = (state) => {
+//   return {
+//     notes: state,
+//   };
+// };
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     addNote: (obj) => dispatch(addNote(obj)),
+//     deleteNote: (id) => dispatch(deleteNote(id))
+//   };
+// };
+function App() {
+  const notes = useSelector(getNotes);
+  console.log(notes);
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   // const [isEditing, setIsEditing] = useState(false);
@@ -35,7 +38,7 @@ function App(props) {
   // const [showArchive, setShowArchive] = useState(false);
 
   const add = (name, category, content) => {
-    props.addNote({
+    dispatch(addNote({
       id: nanoid(),
       name,
       created: getCurrentDate(),
@@ -43,11 +46,12 @@ function App(props) {
       content,
       dates: getDates(content),
       status: "active",
-    })
+    }))
     
     setIsOpen(false);
     setIsAdding(false);
   };
+  const del = (id)=> dispatch(deleteNote(id));
   // const editNote = (obj) => {
   //   setNotes(
   //     notes.map((note) =>
@@ -93,9 +97,10 @@ function App(props) {
       <Table title="notes">
         <NotesTable
           dates={getDates}
-          notes={props.notes.notes}
+          // notes={props.notes.notes}
+          notes={notes}
           // onEditNote={handleEditBtn}
-          onDeleteNote={props.deleteNote}
+          onDeleteNote={del}
           // onArchiveNote={archiveNote}
         />
       </Table>
@@ -128,6 +133,6 @@ function App(props) {
     </>
   );
 }
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+// export default connect(mapStateToProps, mapDispatchToProps)(App);
 
-// export default App;
+export default App;
