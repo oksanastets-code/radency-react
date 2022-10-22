@@ -12,6 +12,28 @@ export const notesSlice = createSlice({
     deleteNote: (state, action) => {
       return state.filter(({ id }) => id !== action.payload);
     },
+    archiveNote: (state, action) => {
+      return state.map((note) => {
+        if (note.id === action.payload) {
+          return {
+            ...note,
+            status: "archived",
+          };
+        }
+        return note;
+      });
+    },
+    unarchiveNote: (state, action) => {
+      return state.map((note) => {
+        if (note.id === action.payload) {
+          return {
+            ...note,
+            status: "active",
+          };
+        }
+        return note;
+      });
+    },
     editNote: (state, action) => {
       return state.map((note) => {
         if (note.id === action.payload.id) {
@@ -23,20 +45,10 @@ export const notesSlice = createSlice({
         return note;
       });
     },
-    archiveNote: (state, action) => {
-      return state.map((note) => {
-        if (note.id === action.payload) {
-          return {
-            ...note,
-            status: "archived"
-          }
-        }
-        return note;
-      })
-    }
   },
 });
 
-export const { addNote, deleteNote, editNote, archiveNote } = notesSlice.actions;
+export const { addNote, deleteNote, editNote, archiveNote, unarchiveNote} =
+  notesSlice.actions;
 
 export default notesSlice.reducer;
