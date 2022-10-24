@@ -22,20 +22,8 @@ import EditNoteForm from "./components/form/editNoteForm";
 import { getDates } from "./helper/getDates";
 import { getCurrentDate } from "./helper/getCurrentDate";
 
-// const mapStateToProps = (state) => {
-//   return {
-//     notes: state,
-//   };
-// };
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     addNote: (obj) => dispatch(addNote(obj)),
-//     deleteNote: (id) => dispatch(deleteNote(id))
-//   };
-// };
 function App() {
   const notes = useSelector(getNotes);
-  // console.log(notes);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -63,7 +51,7 @@ function App() {
 
   const edit = (obj) => {
     dispatch(editNote(obj));
-
+    
     setIsOpen(false);
     setIsEditing(false);
   };
@@ -91,7 +79,6 @@ function App() {
     setIsEditing(true);
     const editingNote = notes.find((note) => note.id === noteId);
     setEditingNote(editingNote);
-    console.log(editingNote);
   };
   return (
     <>
@@ -133,6 +120,5 @@ function App() {
     </>
   );
 }
-// export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 export default App;
