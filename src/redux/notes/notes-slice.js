@@ -35,11 +35,12 @@ export const notesSlice = createSlice({
       });
     },
     editNote: (state, action) => {
+      console.log(action.payload);
       return state.map((note) => {
         if (note.id === action.payload.id) {
           return {
             ...note,
-            item: action.payload.item,
+            ...action.payload
           };
         }
         return note;
