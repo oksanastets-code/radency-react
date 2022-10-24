@@ -2,8 +2,14 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 
 import { useSelector, useDispatch } from "react-redux";
-import { getNoteById, getNotes } from "./redux/notes/notes-selectors";
-import { addNote, deleteNote, archiveNote, unarchiveNote, editNote } from "./redux/notes/notes-slice";
+import { getNotes } from "./redux/notes/notes-selectors";
+import {
+  addNote,
+  deleteNote,
+  archiveNote,
+  unarchiveNote,
+  editNote,
+} from "./redux/notes/notes-slice";
 
 import { Table } from "./components/table/table";
 import { NotesTable } from "./components/notesTable/notesTable";
@@ -29,7 +35,7 @@ import { getCurrentDate } from "./helper/getCurrentDate";
 // };
 function App() {
   const notes = useSelector(getNotes);
-  console.log(notes);
+  // console.log(notes);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -56,23 +62,20 @@ function App() {
   const handleDelBtn = (id) => dispatch(deleteNote(id));
 
   const edit = (obj) => {
-    // setNotes(
-    //   notes.map((note) =>
-    //     note.id !== editingNote.id ? note : { ...editingNote, ...obj }
-    //   )
-    // );
+    dispatch(editNote(obj));
+
     setIsOpen(false);
     setIsEditing(false);
   };
   const arch = (id) => dispatch(archiveNote(id));
 
   const handleUnarchiveBtn = (id) => dispatch(unarchiveNote(id));
- 
+
   const handleCloseModal = () => {
     setIsOpen(false);
     setIsAdding(false);
     setShowArchive(false);
-    // setIsEditing(false);
+    setIsEditing(false);
   };
   const handleCreateBtn = () => {
     setIsOpen(true);
@@ -82,12 +85,13 @@ function App() {
     setIsOpen(true);
     setShowArchive(true);
   };
-  
+
   const handleEditBtn = (noteId) => {
     setIsOpen(true);
     setIsEditing(true);
     const editingNote = notes.find((note) => note.id === noteId);
     setEditingNote(editingNote);
+    console.log(editingNote);
   };
   return (
     <>

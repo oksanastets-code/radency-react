@@ -1,14 +1,11 @@
 import { useState } from "react";
 
 export default function EditNoteForm({ onSubmit, data }) {
-  const [updNote, setUpdNote] = useState({
-    name: data.name,
-    category: data.category,
-    content: data.content,
-  });
+  const [updNote, setUpdNote] = useState({ ...data });
 
   const handleEditInput = ({ target: { name, value } }) => {
     setUpdNote((prev) => ({ ...prev, [name]: value }));
+   
   };
   const handleEditSubmit = (e) => {
     e.preventDefault();
