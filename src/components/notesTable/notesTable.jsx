@@ -1,5 +1,5 @@
 import { getDates } from "../../helper/getDates";
-
+import styled from 'styled-components';
 export const NotesTable = ({
   notes,
   onDeleteNote,
